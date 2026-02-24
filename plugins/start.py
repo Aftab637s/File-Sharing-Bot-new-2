@@ -1,3 +1,5 @@
+        )
+        return
 import os, asyncio, humanize
 from pyrogram import Client, filters, __version__, enums
 from pyrogram.enums import ParseMode
@@ -22,8 +24,8 @@ async def start_command(client: Client, message: Message):
             pass
     
     text = message.text
-    if len(text)>7:
-        # --- BATCH / LINK HANDLING ---
+    # Sirf tabhi link process karega jab /start ke saath base64 data ho
+    if len(text)>7 and "/start " in text:
         try:
             base64_string = text.split(" ", 1)[1]
             string = await decode(base64_string)
@@ -55,19 +57,16 @@ async def start_command(client: Client, message: Message):
     
         madflix_msgs = []
         for msg in messages:
-            f_name = msg.document.file_name if msg.document else "Movie/File"
-            caption = (
-                f"<b><i>{f_name}</i></b>\n"
-                f"<b><blockquote expandable>➢ Aᴜᴅɪᴏ Tʀᴀᴄᴋ:- 🔊 HINDI / ENG</blockquote></b>\n"
-                f"<b><blockquote expandable>➪ sᴜʙᴛɪᴛʟᴇs:- 📝 AVAILABLE</blockquote></b>"
-            )
+            # Original Caption in Blockquotes
+            old_caption = msg.caption.html if msg.caption else ""
+            new_caption = f"<blockquote expandable>{old_caption}</blockquote>" if old_caption else f"<blockquote expandable>{msg.document.file_name if msg.document else 'File'}</blockquote>"
 
             try:
-                madflix_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, protect_content=PROTECT_CONTENT)
+                madflix_msg = await msg.copy(chat_id=message.from_user.id, caption=new_caption, parse_mode=ParseMode.HTML, protect_content=PROTECT_CONTENT)
                 madflix_msgs.append(madflix_msg)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
-                madflix_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, protect_content=PROTECT_CONTENT)
+                madflix_msg = await msg.copy(chat_id=message.from_user.id, caption=new_caption, parse_mode=ParseMode.HTML, protect_content=PROTECT_CONTENT)
                 madflix_msgs.append(madflix_msg)
             except:
                 pass
@@ -77,17 +76,15 @@ async def start_command(client: Client, message: Message):
         return
     
     else:
-        # --- NEW ANIMATION LOGIC ---
-        # Typing niche text mein dikhayega
+        # --- ANIMATION FLOW ---
         status_msg = await message.reply("<b>ᴛʏᴘɪɴɢ...</b>")
         await asyncio.sleep(1)
         
-        # Sticker aayega
         await message.reply_sticker("CAACAgUAAxkBAAECYAlpnPTYKn931L0k_FDtz42O4HE3cwACWRkAAoON0VZunm7nTQJEpzoE")
+        
         await status_msg.delete()
         await asyncio.sleep(0.5)
 
-        # Ab Main Menu khulega
         reply_markup = InlineKeyboardMarkup(
             [
                 [InlineKeyboardButton("🔵 ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ 🔵", url="http://t.me/File_store_movies_bot?startgroup=true")],
