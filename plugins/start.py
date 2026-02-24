@@ -83,23 +83,29 @@ async def start_command(client: Client, message: Message):
         asyncio.create_task(delete_files(madflix_msgs, client, k))
         return
     else:
-        # Aapka Premium Start Look with Photo!
+        # Premium Layout with Color-Vibe Emojis
         reply_markup = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("➕ Add me to your group", url="http://t.me/YOUR_BOT_USERNAME?startgroup=true")],
-                [InlineKeyboardButton("ℹ️ Help", callback_data="about")],
-                [InlineKeyboardButton("🛠 Support", url="https://t.me/ll_I_sukoon_ll"), InlineKeyboardButton("📢 Channel", url="https://t.me/AKDRAMAHUB")],
-                [InlineKeyboardButton("💻 Source", url="https://github.com/JishuDeveloper/File-Sharing-Bot")]
+                [
+                    InlineKeyboardButton("🔵 ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ 🔵", url="http://t.me/File_store_movies_bot?startgroup=true")
+                ],
+                [
+                    InlineKeyboardButton("ℹ️ ʜᴇʟᴘ & ᴀʙᴏᴜᴛ ℹ️", callback_data="about")
+                ],
+                [
+                    InlineKeyboardButton("🌀 sᴜᴘᴘᴏʀᴛ", url="https://t.me/ll_I_sukoon_ll"),
+                    InlineKeyboardButton("🌐 ᴄʜᴀɴɴᴇʟ", url="https://t.me/AKDRAMAHUB")
+                ]
             ]
         )
         await message.reply_photo(
-            photo = "https://graph.org/file/76a0fd6054e0f06536034.jpg",
+            photo = "https://telegra.ph/file/76a0fd6054e0f06536034.jpg",
             caption = START_MSG.format(
                 first = message.from_user.first_name,
                 last = message.from_user.last_name,
                 username = None if not message.from_user.username else '@' + message.from_user.username,
                 mention = message.from_user.mention,
-                id = message.from_user.id
+                id =  message.from_user.id
             ),
             reply_markup = reply_markup
         )
