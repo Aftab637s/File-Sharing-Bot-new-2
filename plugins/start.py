@@ -59,10 +59,18 @@ async def start_command(client: Client, message: Message):
     
         madflix_msgs = []
         for msg in messages:
-            if bool(CUSTOM_CAPTION) & bool(msg.document):
-                caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
-            else:
-                caption = "" if not msg.caption else msg.caption.html
+            # --- AAPKA CUSTOM CAPTION START ---
+            f_name = msg.document.file_name if msg.document else "Movie/File"
+            # Hum default values set kar rahe hain agar metadata na mile
+            langs = "HINDI / ENGLISH" 
+            subs = "AVAILABLE"
+            
+            caption = (
+                f"<b><i>{f_name}</i></b>\n"
+                f"<b><blockquote expandable>➢ Aᴜᴅɪᴏ Tʀᴀᴄᴋ:- 🔊 {langs}</blockquote></b>\n"
+                f"<b><blockquote expandable>➪ sᴜʙᴛɪᴛʟᴇs:- 📝 {subs}</blockquote></b>"
+            )
+            # --- AAPKA CUSTOM CAPTION END ---
 
             if DISABLE_CHANNEL_BUTTON:
                 reply_markup = msg.reply_markup
@@ -83,28 +91,17 @@ async def start_command(client: Client, message: Message):
         asyncio.create_task(delete_files(madflix_msgs, client, k))
         return
     else:
-        # --- ANIMATION START ---
-        # 1. Typing status dikhayega
+        # --- ANIMATION & STICKER ---
         await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
         await asyncio.sleep(1.5)
-
-        # 2. Aapka bheja hua sticker
         await message.reply_sticker("CAACAgUAAxkBAAECYAlpnPTYKn931L0k_FDtz42O4HE3cwACWRkAAoON0VZunm7nTQJEpzoE")
         await asyncio.sleep(1)
 
-        # 3. Final Menu with Photo & Color Buttons
         reply_markup = InlineKeyboardMarkup(
             [
-                [
-                    InlineKeyboardButton("🔵 ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ 🔵", url="http://t.me/File_store_movies_bot?startgroup=true")
-                ],
-                [
-                    InlineKeyboardButton("ℹ️ ʜᴇʟᴘ & ᴀʙᴏᴜᴛ ℹ️", callback_data="about")
-                ],
-                [
-                    InlineKeyboardButton("🌀 sᴜᴘᴘᴏʀᴛ", url="https://t.me/ll_I_sukoon_ll"),
-                    InlineKeyboardButton("🌐 ᴄʜᴀɴɴᴇʟ", url="https://t.me/AKDRAMAHUB")
-                ]
+                [InlineKeyboardButton("🔵 ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ 🔵", url="http://t.me/File_store_movies_bot?startgroup=true")],
+                [InlineKeyboardButton("ℹ️ ʜᴇʟᴘ & ᴀʙᴏᴜᴛ ℹ️", callback_data="about")],
+                [InlineKeyboardButton("🌀 sᴜᴘᴘᴏʀᴛ", url="https://t.me/ll_I_sukoon_ll"), InlineKeyboardButton("🌐 ᴄʜᴀɴɴᴇʟ", url="https://t.me/AKDRAMAHUB")]
             ]
         )
         
@@ -120,4 +117,3 @@ async def start_command(client: Client, message: Message):
             reply_markup = reply_markup
         )
         return
-        
