@@ -1,5 +1,5 @@
 import os, asyncio, humanize
-from pyrogram import Client, filters, __version__
+from pyrogram import Client, filters, __version__, enums
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
@@ -83,7 +83,16 @@ async def start_command(client: Client, message: Message):
         asyncio.create_task(delete_files(madflix_msgs, client, k))
         return
     else:
-        # Premium Layout with Color-Vibe Emojis
+        # --- ANIMATION START ---
+        # 1. Typing status dikhayega
+        await client.send_chat_action(message.chat.id, enums.ChatAction.TYPING)
+        await asyncio.sleep(1.5)
+
+        # 2. Aapka bheja hua sticker
+        await message.reply_sticker("CAACAgUAAxkBAAECYAlpnPTYKn931L0k_FDtz42O4HE3cwACWRkAAoON0VZunm7nTQJEpzoE")
+        await asyncio.sleep(1)
+
+        # 3. Final Menu with Photo & Color Buttons
         reply_markup = InlineKeyboardMarkup(
             [
                 [
@@ -98,6 +107,7 @@ async def start_command(client: Client, message: Message):
                 ]
             ]
         )
+        
         await message.reply_photo(
             photo = "https://telegra.ph/file/76a0fd6054e0f06536034.jpg",
             caption = START_MSG.format(
@@ -110,3 +120,4 @@ async def start_command(client: Client, message: Message):
             reply_markup = reply_markup
         )
         return
+        
