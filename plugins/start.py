@@ -1,5 +1,3 @@
-        )
-        return
 import os, asyncio, humanize
 from pyrogram import Client, filters, __version__, enums
 from pyrogram.enums import ParseMode
@@ -24,7 +22,6 @@ async def start_command(client: Client, message: Message):
             pass
     
     text = message.text
-    # Sirf tabhi link process karega jab /start ke saath base64 data ho
     if len(text)>7 and "/start " in text:
         try:
             base64_string = text.split(" ", 1)[1]
@@ -57,7 +54,6 @@ async def start_command(client: Client, message: Message):
     
         madflix_msgs = []
         for msg in messages:
-            # Original Caption in Blockquotes
             old_caption = msg.caption.html if msg.caption else ""
             new_caption = f"<blockquote expandable>{old_caption}</blockquote>" if old_caption else f"<blockquote expandable>{msg.document.file_name if msg.document else 'File'}</blockquote>"
 
@@ -76,12 +72,9 @@ async def start_command(client: Client, message: Message):
         return
     
     else:
-        # --- ANIMATION FLOW ---
         status_msg = await message.reply("<b>ᴛʏᴘɪɴɢ...</b>")
         await asyncio.sleep(1)
-        
         await message.reply_sticker("CAACAgUAAxkBAAECYAlpnPTYKn931L0k_FDtz42O4HE3cwACWRkAAoON0VZunm7nTQJEpzoE")
-        
         await status_msg.delete()
         await asyncio.sleep(0.5)
 
