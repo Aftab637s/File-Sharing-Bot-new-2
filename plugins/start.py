@@ -57,8 +57,7 @@ async def start_command(client: Client, message: Message):
             return
         await temp_msg.delete()
     
-        madflix_msgs = [] # List to keep track of sent messages
-
+        madflix_msgs = []
         for msg in messages:
             if bool(CUSTOM_CAPTION) & bool(msg.document):
                 caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
@@ -73,7 +72,6 @@ async def start_command(client: Client, message: Message):
             try:
                 madflix_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
                 madflix_msgs.append(madflix_msg)
-                
             except FloodWait as e:
                 await asyncio.sleep(e.x)
                 madflix_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
@@ -82,40 +80,27 @@ async def start_command(client: Client, message: Message):
                 pass
 
         k = await client.send_message(chat_id = message.from_user.id, text=f"<b>❗️ <u>IMPORTANT</u> ❗️</b>\n\nThis Video / File Will Be Deleted In {file_auto_delete} (Due To Copyright Issues).\n\n📌 Please Forward This Video / File To Somewhere Else And Start Downloading There.")
-
-        # Schedule the file deletion
         asyncio.create_task(delete_files(madflix_msgs, client, k))
-        
         return
     else:
-        # YAHAN AAPKE PREMIUM BUTTONS HAIN
+        # Aapka Premium Start Look with Photo!
         reply_markup = InlineKeyboardMarkup(
             [
-                [
-                    InlineKeyboardButton("➕ Add me to your group", url="http://t.me/File_store_movies_bot?startgroup=true")
-                ],
-                [
-                    InlineKeyboardButton("ℹ️ Help", callback_data="about")
-                ],
-                [
-                    InlineKeyboardButton("🛠 Support", url="https://t.me/ll_I_sukoon_ll"),
-                    InlineKeyboardButton("📢 Channel", url="https://t.me/AKDRAMAHUB")
-                ],
-                [
-                    InlineKeyboardButton("💻 Source", url="https://github.com/JishuDeveloper/File-Sharing-Bot")
-                ]
+                [InlineKeyboardButton("➕ Add me to your group", url="http://t.me/YOUR_BOT_USERNAME?startgroup=true")],
+                [InlineKeyboardButton("ℹ️ Help", callback_data="about")],
+                [InlineKeyboardButton("🛠 Support", url="https://t.me/ll_I_sukoon_ll"), InlineKeyboardButton("📢 Channel", url="https://t.me/AKDRAMAHUB")],
+                [InlineKeyboardButton("💻 Source", url="https://github.com/JishuDeveloper/File-Sharing-Bot")]
             ]
         )
-        await message.reply_text(
-            text = START_MSG.format(
+        await message.reply_photo(
+            photo = "https://graph.org/file/76a0fd6054e0f06536034.jpg",
+            caption = START_MSG.format(
                 first = message.from_user.first_name,
                 last = message.from_user.last_name,
                 username = None if not message.from_user.username else '@' + message.from_user.username,
                 mention = message.from_user.mention,
                 id = message.from_user.id
             ),
-            reply_markup = reply_markup,
-            disable_web_page_preview = True,
-            quote = True
+            reply_markup = reply_markup
         )
         return
