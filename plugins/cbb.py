@@ -9,12 +9,12 @@ async def cb_handler(client: Bot, query: CallbackQuery):
     if data == "about":
         await query.message.edit_text(
             text = f"<b>╔════❰ ᴀʙᴏᴜᴛ ᴍᴇ ❱════╗\n\n"
-                   f"🤖 My Name : File Sharing Bot\n"
-                   f"👑 Owner : <a href='https://t.me/ll_I_sukoon_ll'>Sukoon</a>\n"
+                   f"🤖 Bot Name : <a href='https://t.me/File_store_movies_bot'>File Store Movies Bot</a>\n"
+                   f"👑 Owner : <a href='https://t.me/ll_I_sukoon_ll'>Aftab</a>\n"
                    f"🎬 Backup : <a href='https://t.me/AKDRAMAHUB'>AK DRAMA HUB</a>\n"
-                   f"🐍 Language : Python 3\n"
-                   f"📚 Library : Pyrogram {__version__}\n"
-                   f"🚀 Server : Heroku\n"
+                   f"🐍 Language : <a href='https://www.python.org/'>Python 3</a>\n"
+                   f"📚 Library : <a href='https://docs.pyrogram.org/'>Pyrogram {__version__}</a>\n"
+                   f"🚀 Server : <a href='https://www.heroku.com/'>Heroku</a>\n"
                    f"╚══════════════════╝</b>",
             disable_web_page_preview = True,
             reply_markup = InlineKeyboardMarkup(
@@ -31,5 +31,3 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             await query.message.reply_to_message.delete()
         except:
             pass
-
-# Optimized for Aftab (King of Devil)
